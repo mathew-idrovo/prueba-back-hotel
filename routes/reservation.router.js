@@ -48,7 +48,7 @@ router.post(
   },
 );
 
-router.put(
+router.patch(
   '/:id',
   validatorHandler(getReservationSchema, 'params'),
   validatorHandler(updateReservationSchema, 'body'),
