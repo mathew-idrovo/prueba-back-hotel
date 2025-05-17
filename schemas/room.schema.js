@@ -3,7 +3,7 @@ const Joi = require('joi');
 const id = Joi.number().integer();
 const roomNumber = Joi.string().min(1).max(10);
 const type = Joi.string().valid('single', 'double', 'suite');
-const status = Joi.string().valid('available', 'maintenance', 'occupied');
+const status = Joi.string().valid('available', 'occupied');
 
 const createRoomSchema = Joi.object({
   roomNumber: roomNumber.required(),

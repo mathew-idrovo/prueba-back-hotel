@@ -3,7 +3,19 @@ const { models } = require('../libs/sequelize');
 
 class RoomService {
   async create(data) {
-    return await models.Room.create(data);
+    try {
+      return await models.Room.create(data);
+    } catch (error) {
+      if (error.name === 'SequelizeUniqueConstraintError') {
+        throw boom.conflict('roomNumber already exists');
+      }
+
+      if (error.name === 'SequelizeValidationError') {
+        const messages = error.errors.map((e) => e.message).join(', ');
+        throw boom.badRequest(messages);
+      }
+      throw error;
+    }
   }
 
   async find(query) {

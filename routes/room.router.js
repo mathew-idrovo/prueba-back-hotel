@@ -6,14 +6,13 @@ const {
   createRoomSchema,
   updateRoomSchema,
   getRoomSchema,
-  queryRoomSchema,
 } = require('../schemas/room.schema');
 const router = express.Router();
 const service = new RoomService();
 
 router.get(
   '/',
-  validatorHandler(queryRoomSchema, 'query'),
+
   async (req, res, next) => {
     try {
       res.json(await service.find(req.query));
@@ -48,7 +47,7 @@ router.post(
   },
 );
 
-router.put(
+router.patch(
   '/:id',
   validatorHandler(getRoomSchema, 'params'),
   validatorHandler(updateRoomSchema, 'body'),

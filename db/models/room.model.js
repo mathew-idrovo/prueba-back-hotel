@@ -42,7 +42,12 @@ const RoomSchema = {
 };
 
 class Room extends Model {
-  static associate() {}
+  static associate(models) {
+    this.hasMany(models.Reservation, {
+      as: 'reservations',
+      foreignKey: 'roomId',
+    });
+  }
 
   static config(sequelize) {
     return {
