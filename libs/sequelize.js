@@ -1,25 +1,24 @@
+require('dotenv').config();
 const { Sequelize } = require('sequelize');
-const config = require('../config/config');
+const setupModels = require('../db/models');
+const config =
+  require('../config/config')[process.env.NODE_ENV || 'development'];
 
-let sequelize;
-
-if (config.dbUrl) {
-  sequelize = new Sequelize(config.dbUrl, {
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  {
+    host: config.host,
+    port: config.port,
     dialect: config.dialect,
     logging: false,
-  });
-} else {
-  sequelize = new Sequelize(config.dbName, config.dbUser, config.dbPassword, {
-    host: config.dbHost,
-    port: config.dbPort,
-    dialect: config.dialect,
-    logging: false,
-  });
-}
-
+  },
+);
+setupModels(sequelize);
 sequelize
   .authenticate()
-  .then(() => console.log('✅ Conexión a la BD exitosa'))
+  .then(() => console.log('✅ Conexion exitosa a la BD'))
   .catch((err) => console.error('❌ Error conectando a la BD:', err));
 
 module.exports = sequelize;
